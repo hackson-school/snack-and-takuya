@@ -73,7 +73,7 @@ export default function HomePage() {
     const currentState = resolveCharacterState(status);
     const prevState = resolveCharacterState(prev);
 
-    // WONKA突入検知（チョコ2回以上連続）
+    // WONKA突入検知（チョコ3回以上連続）
     if (prevState !== 'WONKA' && currentState === 'WONKA') {
       setCurrentLine('世界一のチョコレートを作ろう！夢はここから始まるよ🎩✨🍫');
     }
@@ -115,7 +115,7 @@ export default function HomePage() {
   const handleEatSnack = useCallback((result: ScanResult) => {
     dispatch({ type: 'EAT_SNACK', payload: result });
     setLastScanResult(result);
-    if (status.chocoStreak < 1 || !result.isChocolate) {
+    if (status.chocoStreak < 2 || !result.isChocolate) {
       setCurrentLine(result.takuyaLine);
     }
   }, [status.chocoStreak]);
@@ -144,14 +144,14 @@ export default function HomePage() {
   const characterState: CharacterState = resolveCharacterState(status);
 
   return (
-    <main className="w-full max-w-[430px] min-h-screen bg-zinc-950 border-x-4 border-yellow-400 flex flex-col justify-between relative shadow-[0_0_25px_rgba(0,0,0,0.8)] overflow-hidden">
+    <main className="w-full max-w-[430px] h-dvh max-h-dvh bg-zinc-950 border-x-4 border-yellow-400 flex flex-col justify-between relative shadow-[0_0_25px_rgba(0,0,0,0.8)] overflow-hidden">
       {/* カイロソフト風レトロヘッダー */}
-      <header className="w-full bg-yellow-400 text-black px-3 py-2 border-b-4 border-black flex items-center justify-between select-none z-10 shadow-sm font-game">
-        <div className="flex items-center gap-1.5 font-extrabold text-sm tracking-wider">
-          <Sparkles className="w-4 h-4 fill-black" />
+      <header className="w-full bg-yellow-400 text-black px-3 py-1.5 border-b-4 border-black flex items-center justify-between select-none z-10 shadow-sm font-game shrink-0">
+        <div className="flex items-center gap-1.5 font-extrabold text-xs sm:text-sm tracking-wider">
+          <Sparkles className="w-3.5 h-3.5 fill-black" />
           <span>SNACK HERO</span>
         </div>
-        <div className="flex items-center gap-2 text-[10px]">
+        <div className="flex items-center gap-2 text-[9px]">
           {characterState === 'WONKA' ? (
             <span className="bg-gradient-to-r from-purple-700 to-pink-600 text-yellow-200 px-2 py-0.5 rounded font-mono font-bold animate-pulse flex items-center gap-1 border border-purple-300">
               <Wand2 className="w-3 h-3" />
@@ -171,8 +171,8 @@ export default function HomePage() {
         cavityRisk={status.cavityRisk}
       />
 
-      {/* メインキャラクターエリア */}
-      <div className="flex-1 flex flex-col justify-between py-1 relative z-0">
+      {/* メインキャラクターエリア（自動伸縮・はみ出し防止） */}
+      <div className="flex-1 flex flex-col justify-between py-1 relative z-0 min-h-0 overflow-hidden">
         <CharacterSprite state={characterState} />
         <SpeechBubble line={currentLine} />
       </div>

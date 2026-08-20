@@ -19,6 +19,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({
@@ -27,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${pressStart2P.variable} dark`}>
-      <body className="min-h-screen bg-zinc-950 text-zinc-100 flex items-center justify-center p-0 sm:p-4">
+    <html lang="ja" className={`${pressStart2P.variable} dark h-full overflow-hidden`}>
+      <body className="h-dvh w-full bg-zinc-950 text-zinc-100 flex items-center justify-center p-0 overflow-hidden select-none">
         {children}
       </body>
     </html>
